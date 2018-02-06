@@ -9,15 +9,6 @@ set_secure_config() {
   su-exec ${GERRIT_USER} git config -f "${GERRIT_SITE}/etc/secure.config" "$@"
 }
 
-wait_for_database() {
-  echo "Waiting for database connection $1:$2 ..."
-  until nc -z $1 $2; do
-    sleep 1
-  done
-
-  # Wait to avoid "panic: Failed to open sql connection pq: the database system is starting up"
-  sleep 1
-}
 
 if [ -n "${JAVA_HEAPLIMIT}" ]; then
   JAVA_MEM_OPTIONS="-Xmx${JAVA_HEAPLIMIT}"
@@ -121,8 +112,6 @@ if [ "$1" = "/docker-entrypoint-init.d/gerrit-start.sh" ]; then
   [ -z "${USER_NAME}" ] || set_gerrit_config user.name "${USER_NAME}"
   [ -z "${USER_EMAIL}" ] || set_gerrit_config user.email "${USER_EMAIL}"
 
-  #Section download
-  [ -z "${DOWNLOAD_SCHEME}" ] || set_gerrit_config download.scheme "${DOWNLOAD_SCHEME}"
 
   #Section Garbage-Collection (gc)
   [ -z "${GC_START_TIME}" ] || set_gerrit_config gc.startTime "${GC_START_TIME}"
