@@ -40,14 +40,6 @@ if [ "$1" = "/docker-entrypoint-init.d/gerrit-start.sh" ]; then
     [ ${#DATABASE_TYPE} -gt 0 ] && rm -rf "${GERRIT_SITE}/git"
   fi
 
-  # Install external plugins
-  echo "Adding eEXTERNAL PLUGINS........."
-  su-exec ${GERRIT_USER} cp -f ${GERRIT_HOME}/delete-project.jar ${GERRIT_SITE}/plugins/delete-project.jar
-  su-exec ${GERRIT_USER} cp -f ${GERRIT_HOME}/events-log.jar ${GERRIT_SITE}/plugins/events-log.jar
-  su-exec ${GERRIT_USER} cp -f ${GERRIT_HOME}/importer.jar ${GERRIT_SITE}/plugins/importer.jar
-  su-exec ${GERRIT_USER} cp -f ${GERRIT_HOME}/webhooks.jar ${GERRIT_SITE}/plugins/webhooks.jar
-  
-
   #Customize gerrit.config
 
   #Section gerrit
@@ -131,6 +123,7 @@ if [ "$1" = "/docker-entrypoint-init.d/gerrit-start.sh" ]; then
 
   #Section download
   [ -z "${DOWNLOAD_SCHEME}" ] || set_gerrit_config download.scheme "${DOWNLOAD_SCHEME}"
+  [ -z "${DOWNLOAD_SCHEME}" ] || set_gerrit_config download.scheme "${DOWNLOAD_SCHEME_SSH}"
 
   #Section Garbage-Collection (gc)
   [ -z "${GC_START_TIME}" ] || set_gerrit_config gc.startTime "${GC_START_TIME}"
@@ -164,7 +157,7 @@ if [ "$1" = "/docker-entrypoint-init.d/gerrit-start.sh" ]; then
 
   echo "Upgrading gerrit..."
   #java -jar "${GERRIT_WAR}" init --batch -d "${GERRIT_SITE}"
-  su-exec ${GERRIT_USER} java ${JAVA_OPTIONS} ${JAVA_MEM_OPTIONS} -jar "${GERRIT_WAR}" init --batch -d "${GERRIT_SITE}" ${GERRIT_INIT_ARGS}
+  su-exec ${GERRIT_USER} java ${JAVA_OPTIONS} ${JAVA_MEM_OPTIONS} -jar "${GERRIT_WAR}" init --batch -d "${GERRIT_SITE}" ${GERRIT_INIT_ARGS} --install-all-plugins
   if [ "${REINDEX}" = "TRUE" ]; then
     #java -jar "${GERRIT_WAR}" reindex --recheck-mergeable -d "${GERRIT_SITE}"
     su-exec ${GERRIT_USER} java ${JAVA_OPTIONS} ${JAVA_MEM_OPTIONS} -jar "${GERRIT_WAR}" reindex --verbose -d "${GERRIT_SITE}"

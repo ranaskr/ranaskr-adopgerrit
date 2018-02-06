@@ -20,13 +20,13 @@ RUN chmod +x /docker-entrypoint-init.d/gerrit*.sh
 
 # Add libiraries
 COPY resources/lib/mysql-connector-java-5.1.21.jar ${GERRIT_HOME}/site_ext/lib/mysql-connector-java-5.1.21.jar
-RUN curl -fSsL https://gerrit-ci.gerritforge.com/view/Plugins-stable-2.14/job/plugin-webhooks-bazel-stable-2.14/lastSuccessfulBuild/artifact/bazel-genfiles/plugins/webhooks/webhooks.jar -o ${GERRIT_HOME}/webhooks.jar
+
 # Add utility scripts
 COPY resources/scripts/ ${GERRIT_HOME}/adop_scripts/
 RUN chmod -R +x ${GERRIT_HOME}/adop_scripts/
 
 # Add site content
-#COPY resources/site/ ${GERRIT_HOME}/site_ext/
+COPY resources/site/ ${GERRIT_HOME}/site_ext/
 
 ENTRYPOINT ["/docker-entrypoint-init.d/gerrit-entrypoint.sh"]
 EXPOSE 8080 29418
