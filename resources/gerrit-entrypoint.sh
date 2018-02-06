@@ -123,7 +123,6 @@ if [ "$1" = "/docker-entrypoint-init.d/gerrit-start.sh" ]; then
 
   #Section download
   [ -z "${DOWNLOAD_SCHEME}" ] || set_gerrit_config download.scheme "${DOWNLOAD_SCHEME}"
-  [ -z "${DOWNLOAD_SCHEME}" ] || set_gerrit_config download.scheme "${DOWNLOAD_SCHEME_SSH}"
 
   #Section Garbage-Collection (gc)
   [ -z "${GC_START_TIME}" ] || set_gerrit_config gc.startTime "${GC_START_TIME}"
