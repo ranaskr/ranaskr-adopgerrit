@@ -20,7 +20,7 @@ RUN chmod +x /docker-entrypoint-init.d/gerrit*.sh
 
 # Add libiraries
 COPY resources/lib/mysql-connector-java-5.1.21.jar ${GERRIT_HOME}/site_ext/lib/mysql-connector-java-5.1.21.jar
-
+RUN curl -fSsL ${GERRITFORGE_URL}/job/plugin-webhooks-${PLUGIN_VERSION}/${GERRITFORGE_ARTIFACT_DIR}/webhooks/webhooks.jar -o ${GERRIT_HOME}/webhooks.jar
 # Add utility scripts
 COPY resources/scripts/ ${GERRIT_HOME}/adop_scripts/
 RUN chmod -R +x ${GERRIT_HOME}/adop_scripts/

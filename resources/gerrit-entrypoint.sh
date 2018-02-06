@@ -9,6 +9,12 @@ set_secure_config() {
   su-exec ${GERRIT_USER} git config -f "${GERRIT_SITE}/etc/secure.config" "$@"
 }
 
+# Install external plugins
+echo "Adding eEXTERNAL PLUGINS........."
+su-exec ${GERRIT_USER} cp -f ${GERRIT_HOME}/delete-project.jar ${GERRIT_SITE}/plugins/delete-project.jar
+su-exec ${GERRIT_USER} cp -f ${GERRIT_HOME}/events-log.jar ${GERRIT_SITE}/plugins/events-log.jar
+su-exec ${GERRIT_USER} cp -f ${GERRIT_HOME}/importer.jar ${GERRIT_SITE}/plugins/importer.jar
+su-exec ${GERRIT_USER} cp -f ${GERRIT_HOME}/webhooks.jar ${GERRIT_SITE}/plugins/webhooks.jar
 
 if [ -n "${JAVA_HEAPLIMIT}" ]; then
   JAVA_MEM_OPTIONS="-Xmx${JAVA_HEAPLIMIT}"
