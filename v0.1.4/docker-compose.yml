@@ -17,7 +17,7 @@ sranagerrit:
   container_name: sranagerrit
   restart: always
   #build: ../images/docker-gerrit/
-  image: sranager:0.2.9
+  image: ranaskr/adop-gerrit:0.1.4
   privileged: true
   net: local_network
   user: root
