@@ -26,7 +26,7 @@ COPY resources/scripts/ ${GERRIT_HOME}/adop_scripts/
 RUN chmod -R +x ${GERRIT_HOME}/adop_scripts/
 
 # Add site content
-COPY resources/site/ ${GERRIT_HOME}/site_ext/
+COPY resources/site/ ${GERRIT_SITE}
 
 ENTRYPOINT ["/docker-entrypoint-init.d/gerrit-entrypoint.sh"]
 EXPOSE 8080 29418
